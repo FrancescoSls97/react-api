@@ -1,54 +1,49 @@
 import { useEffect, useState } from 'react'
 
 
-function App() {
- 
-  const [actors, setActors] = useState([])
-  const [actressess, setActressess] = useState ([])
 
+
+
+function App() {
+  
+  const [actors, setActors] = useState([])
+  
+  
   //fetching dati actors
   function fetchActors () {
-    fetch("https://lanciweb.github.io/demo/api/actors/")
+    fetch("https://lanciweb.github.io/demo/api/actors")
     .then((res) => res.json())
-    .then(setActors); 
+    .then(data => {
+      console.log(data);
+      setActors(data)
+      
+    }); 
   }
-
-  //fetching dati actressess
-  function fetchActressess() {
-    fetch ("https://lanciweb.github.io/demo/api/actresses/")
-    .then((res) => res.json())
-    .then(setActressess)
-  }
-
   //caricare la lista solo alll'avvio dell'applicazione con useEffect
   useEffect(fetchActors, [])
 
-  useEffect(fetchActressess, [])
-
   return (
     <>
-      <div className="container text-center m-2">
-        <h1>Actors</h1>
-          <div className="row row-cols-4 g-0">
-            <div className="col">
-              <div className="card">
-                <div className="row g-0">
-                  <div className="col md-4">
-                    <img src="" className="img-fluid rounded-start" alt="card img here" />
-                    <div className="col md-8">
-                      <div className="cardbody">
-                        <h5 className="card-title">Actor Name</h5>
-                        <p className="card-text">Birth Year</p>
-                        <p className="card-text">Nationality</p>
-                        <p className="card-text">Biography</p>
-                        <p className="card-text">Accomplishments</p>
-                      </div>
-                    </div>
+        <h1 className='text-center m-5'>Attori</h1>
+      <div className="container">
+              {actors.map((actor) =>(
+                <div key={actor.id} className="card m-4">
+                  <div className="row g-0">
+                   <div className="col-md-4">
+                    <img src={actor.image} alt={actor.name} />
+                   </div>
+                   <div className="col-md-8">
+                  <div className="card-body">
+                    <h3>{actor.name}</h3>
+                    <p>Anno di Nascita: {actor.birth_year}</p>
+                    <p>Nazionalità: {actor.nationality}</p>
+                    <p>Biografia: {actor.biography} </p>
+                    <p>Riconoscimenti: {actor.awards}</p>
+                  </div>
+                  </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              ))}
       </div>
     </>
   )
